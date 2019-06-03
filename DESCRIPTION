@@ -1,0 +1,27 @@
+Package: whatismypackage
+Title: What is my package ?
+Version: 0.0.0.9000
+Authors@R: person('Gabrielle', 'Devaux', email = 'gabrielle.devaux@orange.fr', role = c('cre', 'aut'))
+Description: Main goal of this package is to train to build Shiny apps 
+  and learn how to use ThinkR's Golem package. 
+  This package is a game : the user tries to guess from which package a function is
+  coming from.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    shiny,
+    DT,
+    attempt,
+    glue,
+    htmltools,
+    golem,
+    lubridate,
+    shinyBS,
+    dplyr,
+    shinyjs
+Remotes: 
+    Thinkr-open/golem
+RoxygenNote: 6.1.1
+Suggests: 
+    testthat

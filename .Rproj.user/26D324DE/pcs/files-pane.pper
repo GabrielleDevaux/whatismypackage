@@ -1,0 +1,13 @@
+{
+    "path" : "~/MISSIONS/Side-project/Package quizz/whatismypackage/inst/app",
+    "sortOrder" : [
+        {
+            "ascending" : false,
+            "columnIndex" : 1
+        },
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}
