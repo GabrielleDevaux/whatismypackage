@@ -3,3 +3,4 @@
 .RData
 .Ruserdata
 whatismypackage.Rproj
+.Rproj.user/*
