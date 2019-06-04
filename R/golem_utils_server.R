@@ -4,11 +4,11 @@ not_null <- Negate(is.null)
 
 not_na <- Negate(is.na)
 
-drop_nulls <- function(x){
+drop_nulls <- function(x) {
   x[!sapply(x, is.null)]
 }
 
-"%||%" <- function(x, y){
+"%||%" <- function(x, y) {
   if (is.null(x)) {
     y
   } else {
@@ -16,7 +16,7 @@ drop_nulls <- function(x){
   }
 }
 
-"%|NA|%" <- function(x, y){
+"%|NA|%" <- function(x, y) {
   if (is.na(x)) {
     y
   } else {

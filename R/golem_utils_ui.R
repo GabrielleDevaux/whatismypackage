@@ -11,7 +11,7 @@
 #' #'
 #' #' @examples
 #' #' list_to_li(c("a","b"))
-#' 
+#'
 #' list_to_li <- function(list, class = NULL){
 #'   if (is.null(class)){
 #'     tagList(lapply(list, tags$li))
@@ -20,13 +20,13 @@
 #'     res <- lapply(res, function(x) tagAppendAttributes(x, class = class))
 #'     tagList(res)
 #'   }
-#' 
+#'
 #' }
-#' 
+#'
 #' #' @export
 #' #' @rdname lists
 #' #' @importFrom htmltools tags tagAppendAttributes tagList
-#' 
+#'
 #' list_to_p <- function(list, class = NULL){
 #'   if (is.null(class)){
 #'     tagList(lapply(list, tags$p))
@@ -35,15 +35,15 @@
 #'     res <- lapply(res, function(x) tagAppendAttributes(x, class = class))
 #'     tagList(res)
 #'   }
-#' 
+#'
 #' }
-#' 
+#'
 #' #' @export
 #' #' @rdname lists
 #' #' @importFrom glue glue
 #' #' @importFrom htmltools tags tagAppendAttributes tagList
-#' 
-#' 
+#'
+#'
 #' named_to_li <- function(list, class = NULL){
 #'   if(is.null(class)){
 #'     res <- mapply(
@@ -63,7 +63,7 @@
 #'     tagList(res)
 #'   }
 #' }
-#' 
+#'
 #' #' Remove a tag attribute
 #' #'
 #' #' @param tag the tag
@@ -75,7 +75,7 @@
 #' #' @examples
 #' #' a <- shiny::tags$p(src = "plop", "pouet")
 #' #' tagRemoveAttributes(a, "src")
-#' 
+#'
 #' tagRemoveAttributes <- function(tag, ...) {
 #'   attrs <- as.character(list(...))
 #'   for (i in seq_along(attrs)) {
@@ -83,7 +83,7 @@
 #'   }
 #'   tag
 #' }
-#' 
+#'
 #' #' Hide or display a tag
 #' #'
 #' #' @param tag the tag
@@ -100,7 +100,7 @@
 #' #' b <- shiny::actionButton("go_filter", "go")
 #' #' undisplay(b)
 #' #' @rdname display
-#' 
+#'
 #' undisplay <- function(tag) {
 #'   # if not already hidden
 #'   if (!is.null(tag$attribs$style) && !grepl("display:\\s+none", tag$attribs$style)) {
@@ -110,7 +110,7 @@
 #'   }
 #'   tag
 #' }
-#' 
+#'
 #' #' @rdname display
 #' #' @importFrom htmltools tagList
 #' #'
@@ -128,14 +128,14 @@
 #' #' display(b_show)
 #' #'
 #' #' @export
-#' 
+#'
 #' display <- function(tag) {
 #'   if (!is.null(tag$attribs$style) && grepl("display:\\s+none", tag$attribs$style)) {
 #'     tag$attribs$style <- gsub("(\\s)*display:(\\s)*none(\\s)*(;)*(\\s)*", "", tag$attribs$style)
 #'   }
 #'   tag
 #' }
-#' 
+#'
 #' #' Add a red star at the end of the text
 #' #'
 #' #' Adds a red star at the end of the text
@@ -163,9 +163,9 @@
 #'     )
 #'   )
 #' }
-#' 
-#' 
-#' 
+#'
+#'
+#'
 #' #' Repeat tags$br
 #' #'
 #' #' @param times the number of br to return
@@ -177,11 +177,11 @@
 #' #' rep_br(5)
 #' #'
 #' #' @importFrom htmltools HTML
-#' 
+#'
 #' rep_br <- function(times = 1) {
 #'   HTML(rep("<br/>", times = times))
 #' }
-#' 
+#'
 #' #' Create an url
 #' #'
 #' #' @param url the URL
@@ -192,30 +192,30 @@
 #' #'
 #' #' @examples
 #' #' enurl("https://www.thinkr.fr", "ThinkR")
-#' 
+#'
 #' enurl <- function(url, text){
 #'   tags$a(href = url, text)
 #' }
-#' 
-#' 
+#'
+#'
 #' #' Columns 12, 6 and 4
-#' #' 
-#' #' Most shiny columns are 12, 6 or 4 of width. 
-#' #' These are convenient wrappers around 
+#' #'
+#' #' Most shiny columns are 12, 6 or 4 of width.
+#' #' These are convenient wrappers around
 #' #' `column(12, ...)`, `column(6, ...)` and `column(4, ...)`.
-#' #' 
+#' #'
 #' #' @export
 #' #' @rdname columns
 #' col_12 <- function(...){
 #'   shiny::column(12, ...)
 #' }
-#' 
+#'
 #' #' @export
 #' #' @rdname columns
 #' col_6 <- function(...){
 #'   shiny::column(6, ...)
 #' }
-#' 
+#'
 #' #' @export
 #' #' @rdname columns
 #' col_4 <- function(...){
