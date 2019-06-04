@@ -1,4 +1,6 @@
 #' @import shiny
+#' @import shinydashboard
+#' @param n_quest number of questions to generate
 app_ui <- function(n_quest = 20) {
   tagList(
     # Leave this function for adding external resources
@@ -6,38 +8,55 @@ app_ui <- function(n_quest = 20) {
     golem_add_external_resources(),
     golem::js(),
     golem::favicon(),
-    # shinyjs::useShinyjs(),
-    # List the first level UI elements here 
-    fluidPage(
-      h1("What is my package ?"),
-      mod_timer_ui("timer_ui_1"),
+    shinyjs::useShinyjs(),
+    # includeCSS("www/custom.css"),
+    # List the first level UI elements here
 
-      lapply(1:n_quest, function(x){
-        tags$div(id=paste0("placeholder",x))
-      })
-      
-      # tags$div(id="placeholder1"),
-      # tags$div(id="placeholder2"),
-      # tags$div(id="placeholder3"),
-      # tags$div(id="placeholder4")
-      # mod_question_ui("question_ui_1"),
-      # mod_question_ui("question_ui_2"),
-      # mod_question_ui("question_ui_3")
+    dashboardPage(
+      dashboardHeader(
+        title = "What is my package ?"
+      ),
+      dashboardSidebar(
+        disable = TRUE
+      ),
+      dashboardBody(
+        tags$br(),
 
-      
+        fluidRow(
+          column(
+            width = 3,
+            mod_timer_ui("timer_ui_1")
+          ),
+          column(
+            width = 3,
+            offset = 6
+            # real time score
+            # "Score"
+          )
+        ),
+
+        fluidRow(
+          column(
+            width = 8,
+            offset = 2,
+            lapply(1:n_quest, function(x) {
+              tags$div(id = paste0("placeholder", x), class = "question_placeholder")
+            })
+          )
+        )
+      )
     )
   )
 }
 
-golem_add_external_resources <- function(){
-  
+golem_add_external_resources <- function() {
   addResourcePath(
-    'www', system.file('app/www', package = 'whatismypackage')
+    "www", system.file("app/www", package = "whatismypackage")
   )
- 
+
   tagList(
     # Add here all the external resources
     # If you have a custom.css in the inst/app/www
-    tags$link(rel="stylesheet", type="text/css", href="www/custom.css")
+    tags$link(rel = "stylesheet", type = "text/css", href = "www/custom.css")
   )
 }

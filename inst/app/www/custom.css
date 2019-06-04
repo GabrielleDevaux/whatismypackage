@@ -1,0 +1,54 @@
+/*#app_title{
+  color : blue;
+}
+
+
+.content-wrapper{
+  background-color:#FFFFFF;
+}
+*/
+
+.info_box{
+  text-align:center;
+}
+
+.info_title{
+  font-size:200%;
+}
+
+.info_content{
+  font-size:250%;
+  font-weight:bold;
+}
+
+.question_placeholder{
+  text-align:center;
+}
+
+.function_name{
+  font-size:200%;
+  font-family:courier;
+  font-weight:bold;
+}
+
+.answers_button{
+  margin-left : 50px;
+  margin-right : 50px;
+  margin-top : 30px;
+  margin-bottom : 30px;
+  font-size:150%;
+  font-weight:bold;
+  font-family:courier;
+  width:180px;
+}
+
+.congrats{
+  font-size:200%;
+  font-weight:bold;
+  color:purple;
+  text-shadow: 2px 2px 8px #FF0000;
+}
+
+#end_popup{
+  text-align:center;
+}

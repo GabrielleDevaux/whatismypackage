@@ -19,7 +19,8 @@ Imports:
     lubridate,
     shinyBS,
     dplyr,
-    shinyjs
+    shinyjs,
+    shinydashboard
 Remotes: 
     Thinkr-open/golem
 RoxygenNote: 6.1.1
