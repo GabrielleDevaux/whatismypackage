@@ -20,6 +20,12 @@ mod_question_server(input, output, session, question, placeholder, event,
 \item{session}{internal}
 
 \item{question}{data.frame of one row containing a question}
+
+\item{placeholder}{html id}
+
+\item{event}{event}
+
+\item{delai}{delay between each question}
 }
 \description{
 A shiny Module.

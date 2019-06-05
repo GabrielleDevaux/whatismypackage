@@ -50,7 +50,7 @@ mod_playagain_server <- function(input, output, session, timer, results_question
           style = "text-align:center;"
         ),
 
-        paste("Your score is", sum(res), "points over", length(res), "questions."),
+        paste("Your score is", sum(res), "points over", length(res), "questions in", timersec, "seconds."),
 
         tags$p(ifelse(is.na(sum(res) / length(res)),
           "You can do better !",

@@ -12,16 +12,21 @@
 #'
 #' @import dplyr
 generate_questions <- function(all_funs, n, theme) {
-  questions <- all_funs %>%
+  
+  theme_funs <- all_funs %>%
+    filter(theme == theme())
+  
+  
+  questions <- theme_funs %>%
     sample_n(n) %>%
-    filter(theme == theme()) %>%
     select(functions, package)
 
+  
   fausses <- as.data.frame(t(apply(
     questions, 1,
     function(x) {
       true_pkg <- x[2]
-      list_pkg <- unique(all_funs$package)
+      list_pkg <- unique(theme_funs$package)
       list_pkg <- list_pkg[list_pkg != true_pkg]
       false_pkg <- sample(list_pkg, 3)
 
