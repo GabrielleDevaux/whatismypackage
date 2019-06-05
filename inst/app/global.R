@@ -6,7 +6,7 @@ load("data_fun_prod.RData")
 theme_choices <- unique(all_funs$theme)
 
 # Timer in seconds
-timersec <- 20
+timersec <- 40
 
 # Delay before next question in milliseconds
 delai <- 1000
