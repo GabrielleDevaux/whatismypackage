@@ -24,8 +24,8 @@ whatismypackage::run_app()
 
 ## Acknowledgments
 
-* The package structure was made with the package (Golem)[https://github.com/ThinkR-open/golem] developed by ThinkR
-* Some elements of the app were inspired by Victor Perrier's (Memory hex)[https://github.com/dreamRs/memory-hex] game
+* The package structure was made with the package [Golem](https://github.com/ThinkR-open/golem) developed by ThinkR
+* Some elements of the app were inspired by Victor Perrier's [Memory hex](https://github.com/dreamRs/memory-hex) game
 
 
 
