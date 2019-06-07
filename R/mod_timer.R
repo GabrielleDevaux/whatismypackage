@@ -14,7 +14,7 @@
 #'
 #' @keywords internal
 #' @export
-#' @importFrom shiny NS tagList
+#' @import shiny
 #' @importFrom lubridate seconds_to_period
 mod_timer_ui <- function(id) {
   ns <- NS(id)
@@ -38,8 +38,6 @@ mod_timer_server <- function(input, output, session, start = reactive(0), second
 
   # Output the time left.
   output$timeleft <- renderUI({
-    # paste("Time left: ", seconds_to_period(timer()))
-
     HTML(paste(
       "<p class = 'info_title'>REMAINING TIME</p>",
       paste("<p class = 'info_content'>", seconds_to_period(timer()), "</p>")

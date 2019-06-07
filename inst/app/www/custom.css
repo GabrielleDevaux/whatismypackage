@@ -42,6 +42,44 @@
   width:180px;
 }
 
+.true_button{
+  margin-left : 50px;
+  margin-right : 50px;
+  margin-top : 30px;
+  margin-bottom : 30px;
+  font-size : 150%;
+  font-weight : bold;
+  font-family : courier;
+  width : 180px;
+  background-color:green;
+  color:black;
+}
+
+.false_button{
+  margin-left : 50px;
+  margin-right : 50px;
+  margin-top : 30px;
+  margin-bottom : 30px;
+  font-size : 150%;
+  font-weight : bold;
+  font-family : courier;
+  width : 180px;
+  color:black;
+  background-color:red;
+}
+
+.true_button:hover, .true_button:active, .true_button:focus{
+  background-color:green !important;
+  color:black !important;
+  border-color:green !important;
+}
+
+.false_button:hover, .false_button:active, .false_button:focus{
+  background-color:red !important;
+  color:black !important;
+  border-color:red !important;
+}
+
 .congrats{
   font-size:200%;
   font-weight:bold;

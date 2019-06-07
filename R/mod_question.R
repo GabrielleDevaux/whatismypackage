@@ -16,8 +16,8 @@
 #'
 #' @keywords internal
 #' @export
-#' @importFrom shiny NS tagList
-#' @importFrom shinyjs disable
+#' @import shiny
+#' @importFrom shinyjs disable removeCssClass addCssClass
 #' @import dplyr
 mod_question_ui <- function(id) {
   ns <- NS(id)
@@ -32,14 +32,18 @@ mod_question_ui <- function(id) {
 mod_question_server <- function(input, output, session, question, placeholder, event, delai) {
   ns <- session$ns
 
+  # initialize the results
   result <- reactiveValues(score = NULL, close = NULL)
 
+  # generate question
   output$fun_name <- renderUI(
     HTML(paste0("<p class = 'function_name'>", question$functions, "() ?", "</p>"))
   )
 
+  # shuffle good answer / bad answers
   pkgs <- reactive(sample(question %>% select(package, fake1, fake2, fake3) %>% unlist(use.names = FALSE)))
 
+  # generate answer buttons
   output$answers <- renderUI({
     tagList(
       lapply(1:4, function(x) {
@@ -52,12 +56,7 @@ mod_question_server <- function(input, output, session, question, placeholder, e
     )
   })
 
-  disable_all <- function() {
-    lapply(1:4, function(x) {
-      shinyjs::disable(paste0("btn", x))
-    })
-  }
-
+  # when the previous question is over, display the current question
   observeEvent(event(), {
     insertUI(
       selector = placeholder,
@@ -71,29 +70,53 @@ mod_question_server <- function(input, output, session, question, placeholder, e
     )
   })
 
+  # check if clicked button is the good answer
   check_answer <- function(buttonId, trueanswer, answer) {
     score <- NULL
     if (trueanswer == answer) {
-      updateActionButton(session = session, inputId = buttonId, label = "", icon = icon("grin-hearts"))
+      shinyjs::removeCssClass(id = buttonId, class = "answers_button")
+      shinyjs::addCssClass(id = buttonId, class = "true_button")
       score <- 1
     } else {
-      updateActionButton(session = session, inputId = buttonId, label = "", icon = icon("sad-cry"))
+      shinyjs::removeCssClass(id = buttonId, class = "answers_button")
+      shinyjs::addCssClass(id = buttonId, class = "false_button")
       score <- 0
     }
     return(score)
   }
 
-
+  # reaction to a clicked answer : check if it is the good one
   lapply(1:4, function(i) {
     observeEvent(input[[paste0("btn", i)]], {
       result$score <- check_answer(buttonId = paste0("btn", i), trueanswer = question$package, answer = pkgs()[i])
     })
   })
 
+  # show the good answer anyway
+  show_true <- function() {
+    lapply(1:4, function(i) {
+      if (pkgs()[i] == question$package) {
+        shinyjs::delay(100, {
+          shinyjs::removeCssClass(id = paste0("btn", i), class = "answers_button")
+          shinyjs::addCssClass(id = paste0("btn", i), class = "true_button")
+        })
+      }
+    })
+  }
+  # disable all buttons when one is clicked
+  disable_all <- function() {
+    lapply(1:4, function(i) {
+      shinyjs::disable(paste0("btn", i))
+    })
+  }
 
+  # when a button is clicked = when the score isn't null anymore, disable buttons
+  # and show true answer
   observeEvent(result$score, {
     disable_all()
+    show_true()
 
+    # wait a few milliseconds so the user sees if the answer is good or not
     shinyjs::delay(delai, {
       removeUI(selector = placeholder)
       result$close <- TRUE

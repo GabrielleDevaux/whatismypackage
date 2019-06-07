@@ -9,7 +9,7 @@ theme_choices <- unique(all_funs$theme)
 timersec <- 40
 
 # Delay before next question in milliseconds
-delai <- 1000
+delai <- 500
 
 # number of placeholders to generate for the questions
-n_quest <- timersec * delai/1000 + 1
+n_quest <- timersec * 1000/delai + 1
