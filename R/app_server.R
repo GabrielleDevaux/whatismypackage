@@ -4,11 +4,13 @@ app_server <- function(input, output, session) {
 
   # List the first level callModules here
 
+  # welcome to the game and rules
   hello <- callModule(
     module = mod_hello_server,
     id = "hello_ui_1"
   )
 
+  # calculate and display remaining time
   timer <- callModule(
     module = mod_timer_server,
     id = "timer_ui_1",
@@ -46,13 +48,19 @@ app_server <- function(input, output, session) {
     )
   })
 
+  # calculate and display real time score
+  realtime_score <- callModule(
+    module = mod_realtime_score_server,
+    id = "realtime_score_ui_1",
+    results_question = results_question
+  )
 
   # Ending game popup when time is over
   play_again <- callModule(
     module = mod_playagain_server,
     id = "playagain_ui_1",
     timer = timer,
-    results_question = results_question
+    score = realtime_score
   )
 
   # Reload the app if the player wants to play again

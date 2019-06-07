@@ -8,6 +8,7 @@
 #' @param output internal
 #' @param session internal
 #' @param timer timer
+#' @param score current score and number of answered questions
 #'
 #' @rdname mod_playagain
 #'
@@ -25,24 +26,10 @@ mod_playagain_ui <- function(id) {
 #' @export
 #' @keywords internal
 
-mod_playagain_server <- function(input, output, session, timer, results_question) {
+mod_playagain_server <- function(input, output, session, timer, score) {
   ns <- session$ns
   observe({
-    if (timer() == 0) { # or timer() < 1 ? idk what is best
-
-      # convert the results to a list
-      results <- lapply(
-        X = reactiveValuesToList(results_question),
-        FUN = reactiveValuesToList
-      )
-
-      # extract the score
-      score <- lapply(results, function(x) {
-        x$score
-      })
-
-      # convert to vector
-      res <- as.numeric(score[!sapply(score, is.null)])
+    if (timer() == 0) {
 
       # Display the end popup
       showModal(modalDialog(
@@ -50,11 +37,11 @@ mod_playagain_server <- function(input, output, session, timer, results_question
           style = "text-align:center;"
         ),
 
-        paste("Your score is", sum(res), "points over", length(res), "questions in", timersec, "seconds."),
+        paste("Your score is", score$score, "points over", score$nb_question, "questions in", timersec, "seconds."),
 
-        tags$p(ifelse(is.na(sum(res) / length(res)),
+        tags$p(ifelse(is.na(score$score / score$nb_question),
           "You can do better !",
-          ifelse(sum(res) / length(res) >= 0.5,
+          ifelse(score$score / score$nb_question >= 0.5,
             "Congratulations !",
             "You can do better !"
           )

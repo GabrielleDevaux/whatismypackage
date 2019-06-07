@@ -10,6 +10,7 @@ app_ui <- function(n_quest = 20) {
     golem::favicon(),
     shinyjs::useShinyjs(),
     # includeCSS("www/custom.css"),
+
     # List the first level UI elements here
 
     dashboardPage(
@@ -25,16 +26,18 @@ app_ui <- function(n_quest = 20) {
         fluidRow(
           column(
             width = 3,
+            # display timer
             mod_timer_ui("timer_ui_1")
           ),
           column(
             width = 3,
-            offset = 6
-            # real time score
-            # "Score"
+            offset = 6,
+            # display score
+            mod_realtime_score_ui("realtime_score_ui_1")
           )
         ),
 
+        # create place for questions
         fluidRow(
           column(
             width = 8,

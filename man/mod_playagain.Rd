@@ -7,7 +7,7 @@
 \usage{
 mod_playagain_ui(id)
 
-mod_playagain_server(input, output, session, timer, results_question)
+mod_playagain_server(input, output, session, timer, score)
 }
 \arguments{
 \item{id}{shiny id}
@@ -19,6 +19,8 @@ mod_playagain_server(input, output, session, timer, results_question)
 \item{session}{internal}
 
 \item{timer}{timer}
+
+\item{score}{current score and number of answered questions}
 }
 \description{
 A shiny Module.
