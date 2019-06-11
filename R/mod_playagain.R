@@ -9,6 +9,7 @@
 #' @param session internal
 #' @param timer timer
 #' @param score current score and number of answered questions
+#' @param theme theme 
 #'
 #' @rdname mod_playagain
 #'
@@ -26,29 +27,37 @@ mod_playagain_ui <- function(id) {
 #' @export
 #' @keywords internal
 
-mod_playagain_server <- function(input, output, session, timer, score) {
+mod_playagain_server <- function(input, output, session, timer, score, theme) {
   ns <- session$ns
   observe({
     if (timer() == 0) {
-
+      
       # Display the end popup
       showModal(modalDialog(
+        size = 'l',
         title = tags$div("Time is over !",
-          style = "text-align:center;"
+                         style = "text-align:center;"
         ),
-
+        
         paste("Your score is", score$score, "points over", score$nb_question, "questions in", timersec, "seconds."),
-
+        
         tags$p(ifelse(is.na(score$score / score$nb_question),
-          "You can do better !",
-          ifelse(score$score / score$nb_question >= 0.5,
-            "Congratulations !",
-            "You can do better !"
-          )
+                      "You can do better !",
+                      ifelse(score$score / score$nb_question >= 0.5,
+                             "Congratulations !",
+                             "You can do better !"
+                      )
         ),
         class = "congrats"
         ),
-
+        
+        tags$hr(),
+        
+        mod_add_user_score_ui(ns("add_user_score_ui_1"), 
+                              curr_theme = theme),
+        
+        
+        
         footer = actionButton(
           inputId = ns("play_again"),
           label = "Play again",
@@ -58,7 +67,11 @@ mod_playagain_server <- function(input, output, session, timer, score) {
       ))
     }
   })
-
+  
+  callModule(mod_add_user_score_server, "add_user_score_ui_1",
+             curr_theme = theme,
+             score = score$score)
+  
   return(reactive(input$play_again))
 }
 

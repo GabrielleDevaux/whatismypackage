@@ -60,7 +60,8 @@ app_server <- function(input, output, session) {
     module = mod_playagain_server,
     id = "playagain_ui_1",
     timer = timer,
-    score = realtime_score
+    score = realtime_score,
+    theme = hello$theme
   )
 
   # Reload the app if the player wants to play again
