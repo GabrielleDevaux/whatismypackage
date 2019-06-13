@@ -30,7 +30,7 @@ mod_realtime_score_ui <- function(id) {
 mod_realtime_score_server <- function(input, output, session, results_question) {
   ns <- session$ns
 
-  res <- reactiveValues(score = NULL, nb_question = NULL)
+  res <- reactiveValues(score = NULL, nb_question = NULL, scorecumul = NULL)
 
   observe({
     # convert the results to a list
@@ -38,23 +38,38 @@ mod_realtime_score_server <- function(input, output, session, results_question) 
       X = reactiveValuesToList(results_question),
       FUN = reactiveValuesToList
     )
-
     # extract the score
     score <- lapply(results, function(x) {
       x$score
     })
-
     # convert to vector
     scorev <- as.numeric(score[!sapply(score, is.null)])
-    res$score <- sum(scorev)
-    res$nb_question <- length(scorev)
+
+    if(length(scorev) >=1){
+      consecutive <- sequence(rle(scorev)$length) - 1
+      score_t = numeric(length(scorev))
+      score_t[1] = scorev[1]*10
+      if(length(scorev) >=2){
+        for(i in 2:length(scorev)){
+          score_t[i] <- floor(score_t[i-1] + scorev[i]*10 + 2*consecutive[i]^(0.8))
+        }
+      }
+      res$score <- sum(scorev)
+      res$nb_question <- length(scorev)
+      res$scorecumul <- score_t[length(score_t)]
+  
+    } else{
+      res$score <- 0
+      res$nb_question <- 0
+      res$scorecumul <- 0
+    }
   })
 
   output$current_score <- renderUI({
     req(res)
     HTML(paste(
       "<p class = 'info_title'>SCORE</p>",
-      paste("<p class = 'info_content'>", res$score, "</p>")
+      paste("<p class = 'info_content'>", res$scorecumul, "</p>")
     ))
   })
   return(res)

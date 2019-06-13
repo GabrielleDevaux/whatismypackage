@@ -36,11 +36,11 @@ mod_playagain_server <- function(input, output, session, timer, score, theme, us
       # Display the end popup
       showModal(modalDialog(
         size = "l",
-        title = tags$div("Time is over !",
+        title = tags$div(paste("Time is over !", "Your score is", score$scorecumul,"points !"),
           style = "text-align:center;"
         ),
 
-        paste("Your score is", score$score, "points over", score$nb_question, "questions in", timersec, "seconds."),
+        paste("You made", score$score, "correct answers out of", score$nb_question, "questions in", timersec, "seconds."),
 
         tags$p(ifelse(is.na(score$score / score$nb_question),
           "You can do better !",
@@ -71,7 +71,7 @@ mod_playagain_server <- function(input, output, session, timer, score, theme, us
 
   callModule(mod_add_user_score_server, "add_user_score_ui_1",
     curr_theme = theme,
-    score = score$score
+    score = score$scorecumul
   )
 
   return(reactive(input$play_again))
