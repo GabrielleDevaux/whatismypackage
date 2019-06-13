@@ -1,5 +1,5 @@
 # Module UI
-  
+
 #' @title   mod_add_user_score_ui and mod_add_user_score_server
 #' @description  A shiny Module.
 #'
@@ -9,23 +9,27 @@
 #' @param session internal
 #' @param curr_theme theme
 #' @param score score
+#' @param usecase usecase
+#' @param ec_room ethercalc room for saving scores
+#' @param ec_host ethercalc host
 #'
 #' @rdname mod_add_user_score
 #'
 #' @keywords internal
-#' @export 
-#' @import shiny 
-#' @importFrom DT renderDataTable dataTableOutput datatable
-#' @importFrom shinyjs disable click
-mod_add_user_score_ui <- function(id, curr_theme){
+#' @export
+#' @import shiny
+#' @import dplyr
+#' @importFrom DT renderDT DTOutput datatable
+#' @importFrom shinyjs disable click delay
+#' @importFrom ethercalc ec_edit ec_export
+#' @importFrom utils read.table
+mod_add_user_score_ui <- function(id, curr_theme) {
   ns <- NS(id)
   tagList(
-    
     splitLayout(
       tagList(
-        
         tags$br(),
-        
+
         fluidRow(
           column(
             width = 10,
@@ -39,22 +43,30 @@ mod_add_user_score_ui <- function(id, curr_theme){
           ),
           style = "padding:0px;margin:0px;"
         ),
-        
+
         tags$br(),
         fluidRow(
           column(
             width = 6,
             offset = 6,
             align = "center",
-            actionButton(inputId = ns("validate"),
-                         label = "Save my score",
-                         icon = icon("save"))
+            actionButton(
+              inputId = ns("validate"),
+              label = "Save my score",
+              icon = icon("save")
+            )
           ),
           style = "padding:0px;margin:0px;"
         ),
-        
-        tags$br(),
-        tags$br(),
+
+        conditionalPanel(
+          condition = ".USECASE =='shinyappsio'",
+          tags$p("Apologies : the score saving is experimental and may not work everytime",
+            style = "white-space: pre-wrap; word-break: keep-all; padding:0px;margin:0px; margin-right:10px;"
+          )
+        ),
+
+        tags$hr(),
         fluidRow(
           column(
             width = 10,
@@ -63,13 +75,13 @@ mod_add_user_score_ui <- function(id, curr_theme){
             selectInput(
               inputId = ns("theme"),
               label = "Display scores from : ",
-              choices = c('All',theme_choices),
+              choices = c("All", theme_choices),
               selected = curr_theme()
             )
           ),
           style = "padding:0px;margin:0px;"
         ),
-        
+
         tags$br(),
         fluidRow(
           column(
@@ -84,79 +96,87 @@ mod_add_user_score_ui <- function(id, curr_theme){
           ),
           style = "padding:0px;margin:0px;"
         )
-        
       ),
-      DT::dataTableOutput(ns("table_score")),
-      cellWidths = c("40%","60%")
+      DT::DTOutput(ns("table_score")),
+      cellWidths = c("40%", "60%")
     )
-    
-    
-    
   )
 }
-    
+
 # Module Server
-    
+
 #' @rdname mod_add_user_score
 #' @export
 #' @keywords internal
-    
-mod_add_user_score_server <- function(input, output, session, curr_theme, score){
-  ns <- session$ns
-  
-  observeEvent(input$validate,{
-    if(input$nickname!=""){
-      newline = paste(
-        as.character(Sys.Date()),
-        curr_theme(),
-        input$nickname,
-        score,
-        sep = ";"
-      )
-      
-      write(newline, file = "save_scores.txt", append = TRUE)
 
-      # table_scores <- table_scores[order(-as.numeric(table_scores$Score), as.Date(table_scores$Date)),]
-      
-      # table_scores <- rbind(table_scores, newline)
-      # table_scores$Rank <- 1:nrow(table_scores)
-      # write.table(table_scores, file = "save_scores.txt", sep = ";", 
-      #             row.names = FALSE,
-      #             quote = FALSE)
-      
-      table_scores <- read.table("save_scores.txt", sep = ";", header = TRUE, stringsAsFactors = FALSE)
-      
-      if(nrow(merge(table_scores,newline))>1){
+mod_add_user_score_server <- function(input, output, session, curr_theme, score,
+                                      usecase = .USECASE, ec_room = .EC_ROOM, ec_host = .EC_HOST) {
+  ns <- session$ns
+
+  observeEvent(input$validate, {
+    if (input$nickname != "") {
+      newline <- data.frame(
+        Date = as.character(format(Sys.Date(), "%d-%m-%Y")),
+        Theme = curr_theme(),
+        Nickname = input$nickname,
+        Score = score,
+        stringsAsFactors = FALSE
+      )
+
+      if (usecase == "local") {
+        # save score with local file
+        write(paste(newline[1, ], collapse = ";"), file = "save_scores.txt", append = TRUE)
+        table_scores <- read.table("save_scores.txt", sep = ";", header = TRUE, stringsAsFactors = FALSE)
+      } else if (usecase == "shinyappsio") {
+        # save score on ethercalc
+        data <- ec_export(.EC_ROOM, ec_host = .EC_HOST)
+        data <- rbind(data, newline)
+        ec_edit(data, room = .EC_ROOM, browse = FALSE, ec_host = .EC_HOST)
+        table_scores <- ec_export(.EC_ROOM, ec_host = .EC_HOST)
+        Sys.sleep(1) # little delay
+        table_scores <- ec_export(.EC_ROOM, ec_host = .EC_HOST)
+      }
+
+      # disable saving button to avoid double save
+      if (nrow(merge(table_scores, newline)) >= 1) {
         shinyjs::disable("validate")
         shinyjs::disable("nickname")
-        shinyjs::disable("save_score")
         shinyjs::click("refresh")
       }
     }
   })
-  
-  output$table_score <- DT::renderDataTable({
+
+  output$table_score <- DT::renderDT({
     input$refresh
-    
-    table_scores <- read.table("save_scores.txt", sep = ";", header = TRUE, stringsAsFactors = FALSE)
-    
-    if(input$theme != "All"){
-      table_scores <- table_scores[table_scores$Theme == input$theme,]
+
+    if (usecase == "local") {
+      # read score locally
+      table_scores <- read.table("save_scores.txt", sep = ";", header = TRUE, stringsAsFactors = FALSE)
+    } else if (usecase == "shinyappsio") {
+      # read score on ethercalc
+      table_scores <- ec_export(.EC_ROOM, ec_host = .EC_HOST)
+    }
+
+    if (input$theme != "All" & nrow(table_scores) > 0) {
+      # filter by theme
+      table_scores <- table_scores[table_scores$Theme == input$theme, ]
     }
 
     DT::datatable(
       table_scores,
       rownames = FALSE,
-      options = list(scrollX = TRUE,
-                     pageLength = 6,
-                     lengthChange = FALSE,
-                     order = list(list(3, 'desc'))))
-    })
+      options = list(
+        scrollX = TRUE,
+        pageLength = 6,
+        lengthChange = FALSE,
+        order = list(list(3, "desc"))
+      )
+    )
+  })
 }
-    
+
 ## To be copied in the UI
 # mod_add_user_score_ui("add_user_score_ui_1")
-    
+
 ## To be copied in the server
 # callModule(mod_add_user_score_server, "add_user_score_ui_1")
- 

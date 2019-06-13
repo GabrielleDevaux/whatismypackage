@@ -1,5 +1,5 @@
 #' @import shiny
-app_server <- function(input, output, session) {
+app_server <- function(input, output, session, usecase = .USECASE) {
   # all_funs, timersec, n_quest and delai are defined in global.R
 
   # List the first level callModules here
@@ -61,7 +61,8 @@ app_server <- function(input, output, session) {
     id = "playagain_ui_1",
     timer = timer,
     score = realtime_score,
-    theme = hello$theme
+    theme = hello$theme,
+    usecase = usecase
   )
 
   # Reload the app if the player wants to play again

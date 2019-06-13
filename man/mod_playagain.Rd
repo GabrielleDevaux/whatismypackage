@@ -7,7 +7,8 @@
 \usage{
 mod_playagain_ui(id)
 
-mod_playagain_server(input, output, session, timer, score, theme)
+mod_playagain_server(input, output, session, timer, score, theme,
+  usecase = .USECASE)
 }
 \arguments{
 \item{id}{shiny id}
@@ -23,6 +24,8 @@ mod_playagain_server(input, output, session, timer, score, theme)
 \item{score}{current score and number of answered questions}
 
 \item{theme}{theme}
+
+\item{usecase}{usecase}
 }
 \description{
 A shiny Module.

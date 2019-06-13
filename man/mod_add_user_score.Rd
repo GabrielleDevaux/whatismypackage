@@ -7,7 +7,8 @@
 \usage{
 mod_add_user_score_ui(id, curr_theme)
 
-mod_add_user_score_server(input, output, session, curr_theme, score)
+mod_add_user_score_server(input, output, session, curr_theme, score,
+  usecase = .USECASE, ec_room = .EC_ROOM, ec_host = .EC_HOST)
 }
 \arguments{
 \item{id}{shiny id}
@@ -21,6 +22,12 @@ mod_add_user_score_server(input, output, session, curr_theme, score)
 \item{session}{internal}
 
 \item{score}{score}
+
+\item{usecase}{usecase}
+
+\item{ec_room}{ethercalc room for saving scores}
+
+\item{ec_host}{ethercalc host}
 }
 \description{
 A shiny Module.

@@ -20,7 +20,8 @@ Imports:
     shinyBS,
     dplyr,
     shinyjs,
-    shinydashboard
+    shinydashboard,
+    ethercalc
 Remotes: 
     Thinkr-open/golem
 RoxygenNote: 6.1.1
