@@ -3,7 +3,7 @@ Little game to check your knowledge about R packages, made with R Shiny. The mai
 
 
 # Try the demo
-The app is available on [shinyapps.io](https://gabrielledevaux.shinyapps.io/whatismypackage/).
+The app is available on [shinyapps.io](https://gabrielledevaux.shinyapps.io/whatismypackage/). Note : it is not the last github version.
 
 
 # Installation
