@@ -32,12 +32,19 @@ mod_hello_server <- function(input, output, session) {
       style = "text-align:center;"
     ),
     tags$br(),
-    tags$p(paste("Find the good package for as much R functions as possible in", timersec, "seconds !")),
-    tags$p("Each function can belong to only one package."),
+    tags$div(
+      paste("Find the good package for as much R functions as possible in", timersec, "seconds !"),
+      tags$br(),
+      tags$br(),
+      "Each function can belong to only one package.",
+      tags$br(),
+      HTML("A good answer gives you <b>10 points</b>. If you cumulate good answers, you get <b>bonus points !</b>"),
+      tags$br(),
+      tags$br(),
+      "Choose a theme and click the play button to begin the game !",
+      style = "text-align:center; font-size:120%;"
+    ),
 
-    tags$br(),
-
-    tags$p("Choose a theme and click the play button to begin the game !"),
 
     fluidRow(
       column(

@@ -23,7 +23,7 @@
 #' @importFrom shinyjs disable click delay
 #' @importFrom ethercalc ec_edit ec_export
 #' @importFrom utils read.table
-mod_add_user_score_ui <- function(id, curr_theme) {
+mod_add_user_score_ui <- function(id, curr_theme){
   ns <- NS(id)
   tagList(
     splitLayout(
@@ -59,12 +59,7 @@ mod_add_user_score_ui <- function(id, curr_theme) {
           style = "padding:0px;margin:0px;"
         ),
 
-        conditionalPanel(
-          condition = ".USECASE =='shinyappsio'",
-          tags$p("Apologies : the score saving is experimental and may not work everytime",
-            style = "white-space: pre-wrap; word-break: keep-all; padding:0px;margin:0px; margin-right:10px;"
-          )
-        ),
+        htmlOutput(ns("apologies")),
 
         tags$hr(),
         fluidRow(
@@ -112,6 +107,19 @@ mod_add_user_score_ui <- function(id, curr_theme) {
 mod_add_user_score_server <- function(input, output, session, curr_theme, score,
                                       usecase = .USECASE, ec_room = .EC_ROOM, ec_host = .EC_HOST) {
   ns <- session$ns
+  
+  
+  output$apologies <- renderUI({
+    if(usecase == "shinyappsio"){
+      res <- tags$div("Apologies : the score saving is experimental and may not work everytime",
+                        style = "white-space: pre-wrap; word-break: keep-all; padding:0px;margin:0px; margin-right:10px;"
+      )
+    } else { 
+      res <- ""
+    }
+    res
+  })
+  
 
   observeEvent(input$validate, {
     if (input$nickname != "") {
