@@ -10,7 +10,7 @@ golem::document_and_reload()
 
 # Run the application
 whatismypackage::run_app("local")
-# whatismypackage::run_app("shinyappsio", ec_host = "https://ethercalc.org", ec_room = "h7v2ay68zbby")
+# whatismypackage::run_app("shinyappsio", ec_host = "https://ethercalc.org", ec_room = "***************")
 # whatismypackage::run_app("remote")
 
 

@@ -18,7 +18,7 @@ devtools::install_github("GabrielleDevaux/whatismypackage")
 Launch the app locally.
 ```
 library(whatismypackage)
-whatismypackage::run_app('local)
+whatismypackage::run_app('local')
 ```
 Launch the app with an Ethercalc Room to share the scores. This solution was developped to have persistent data when the app is deployed on shinyapp.io.
 ```

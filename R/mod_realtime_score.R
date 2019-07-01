@@ -51,7 +51,7 @@ mod_realtime_score_server <- function(input, output, session, results_question) 
       score_t[1] = scorev[1]*10
       if(length(scorev) >=2){
         for(i in 2:length(scorev)){
-          score_t[i] <- floor(score_t[i-1] + scorev[i]*10 + 2*consecutive[i]^(0.8))
+          score_t[i] <- floor(score_t[i-1] + scorev[i]*10 + 2*scorev[i]*consecutive[i]^(0.8))
         }
       }
       res$score <- sum(scorev)
