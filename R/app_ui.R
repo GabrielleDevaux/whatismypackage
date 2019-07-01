@@ -6,7 +6,7 @@ app_ui <- function(n_quest = 20) {
     # Leave this function for adding external resources
     # from inst/app/www
     golem_add_external_resources(),
-    golem::js(),
+    golem::activate_js(),
     golem::favicon(),
     shinyjs::useShinyjs(),
     # includeCSS("www/custom.css"),
@@ -43,6 +43,7 @@ app_ui <- function(n_quest = 20) {
             width = 8,
             offset = 2,
             lapply(1:n_quest, function(x) {
+            # lapply(1:get_golem_options("n_quest"), function(x) {
               tags$div(id = paste0("placeholder", x), class = "question_placeholder")
             })
           )

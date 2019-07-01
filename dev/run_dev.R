@@ -8,10 +8,11 @@ golem::detach_all_attached()
 # Document and reload your package
 golem::document_and_reload()
 
-# Run the application
-whatismypackage::run_app("local")
-# whatismypackage::run_app("shinyappsio", ec_host = "https://ethercalc.org", ec_room = "***************")
-# whatismypackage::run_app("remote")
-
+# whatismypackage::run_app("local", score_path = "inst/app/www/save_scores.txt",  data = "inst/app/www/data_fun_prod.RData", timersec = 5)
+whatismypackage::run_app(usecase = "shinyappsio", 
+                          ec_host = "https://ethercalc.org", 
+                          ec_room = "h7v2ay68zbby",
+                          data = "inst/app/www/data_fun_prod.RData",
+                         timersec = 5)
 
 

@@ -28,7 +28,7 @@ mod_playagain_ui <- function(id) {
 #' @export
 #' @keywords internal
 
-mod_playagain_server <- function(input, output, session, timer, score, theme, usecase = .USECASE) {
+mod_playagain_server <- function(input, output, session, timer, score, theme, usecase = "") {
   ns <- session$ns
   observe({
     if (timer() == 0) {
@@ -40,7 +40,7 @@ mod_playagain_server <- function(input, output, session, timer, score, theme, us
           style = "text-align:center;"
         ),
 
-        paste("You made", score$score, "correct answers out of", score$nb_question, "questions in", timersec, "seconds."),
+        paste("You made", score$score, "correct answers out of", score$nb_question, "questions in", get_golem_options("timersec"), "seconds."),
 
         tags$p(ifelse(is.na(score$score / score$nb_question),
           "You can do better !",
@@ -55,7 +55,8 @@ mod_playagain_server <- function(input, output, session, timer, score, theme, us
         tags$hr(),
 
         mod_add_user_score_ui(ns("add_user_score_ui_1"),
-          curr_theme = theme
+          curr_theme = theme,
+          theme_choices = get_golem_options("theme_choices")
         ),
 
 
@@ -71,7 +72,11 @@ mod_playagain_server <- function(input, output, session, timer, score, theme, us
 
   callModule(mod_add_user_score_server, "add_user_score_ui_1",
     curr_theme = theme,
-    score = score$scorecumul
+    score = score$scorecumul,
+    usecase = get_golem_options("usecase"), 
+    ec_room = get_golem_options("ec_room"), 
+    ec_host = get_golem_options("ec_host"),
+    scores_path = get_golem_options("score_path")
   )
 
   return(reactive(input$play_again))

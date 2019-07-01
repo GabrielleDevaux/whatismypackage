@@ -2,9 +2,10 @@
 % Please edit documentation in R/run_app.R
 \name{run_app}
 \alias{run_app}
-\title{run_app}
+\title{run_app2}
 \usage{
-run_app(usecase, ec_host = "", ec_room = "")
+run_app(usecase, ec_host = "", ec_room = "", data = "",
+  score_path = "", timersec = 40)
 }
 \arguments{
 \item{usecase}{local, shinyappsio or remote}
@@ -12,6 +13,12 @@ run_app(usecase, ec_host = "", ec_room = "")
 \item{ec_host}{ethercalc host}
 
 \item{ec_room}{ethercalc room}
+
+\item{data}{data}
+
+\item{score_path}{score path}
+
+\item{timersec}{timer}
 }
 \description{
 Run the Shiny Application

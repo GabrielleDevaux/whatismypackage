@@ -7,6 +7,7 @@
 #' @param input internal
 #' @param output internal
 #' @param session internal
+#' @param theme_choices theme choices
 #'
 #' @rdname mod_hello
 #'
@@ -24,7 +25,7 @@ mod_hello_ui <- function(id) {
 #' @export
 #' @keywords internal
 
-mod_hello_server <- function(input, output, session) {
+mod_hello_server <- function(input, output, session, theme_choices) {
   ns <- session$ns
 
   showModal(modalDialog(
@@ -33,7 +34,7 @@ mod_hello_server <- function(input, output, session) {
     ),
     tags$br(),
     tags$div(
-      paste("Find the good package for as much R functions as possible in", timersec, "seconds !"),
+      paste("Find the good package for as much R functions as possible in", get_golem_options("timersec"), "seconds !"),
       tags$br(),
       tags$br(),
       "Each function can belong to only one package.",

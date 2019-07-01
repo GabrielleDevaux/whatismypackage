@@ -22,8 +22,9 @@ Imports:
     shinyjs,
     shinydashboard,
     ethercalc (>= 0.1.0),
-    readr
-Remotes:  
+    readr,
+    pkgload
+Remotes: 
     Thinkr-open/golem,
     hrbrmstr/ethercalc
 RoxygenNote: 6.1.1

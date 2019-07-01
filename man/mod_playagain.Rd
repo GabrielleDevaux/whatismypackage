@@ -8,7 +8,7 @@
 mod_playagain_ui(id)
 
 mod_playagain_server(input, output, session, timer, score, theme,
-  usecase = .USECASE)
+  usecase = "")
 }
 \arguments{
 \item{id}{shiny id}

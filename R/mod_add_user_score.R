@@ -12,6 +12,7 @@
 #' @param usecase usecase
 #' @param ec_room ethercalc room for saving scores
 #' @param ec_host ethercalc host
+#' @param scores_path score path
 #'
 #' @rdname mod_add_user_score
 #'
@@ -21,9 +22,9 @@
 #' @import dplyr
 #' @importFrom DT renderDT DTOutput datatable
 #' @importFrom shinyjs disable click delay
-#' @importFrom ethercalc ec_edit ec_export
+#' @importFrom ethercalc ec_edit ec_read
 #' @importFrom utils read.table
-mod_add_user_score_ui <- function(id, curr_theme){
+mod_add_user_score_ui <- function(id, curr_theme, theme_choices){
   ns <- NS(id)
   tagList(
     splitLayout(
@@ -105,7 +106,8 @@ mod_add_user_score_ui <- function(id, curr_theme){
 #' @keywords internal
 
 mod_add_user_score_server <- function(input, output, session, curr_theme, score,
-                                      usecase = .USECASE, ec_room = .EC_ROOM, ec_host = .EC_HOST) {
+                                      usecase, ec_room, ec_host,
+                                      scores_path) {
   ns <- session$ns
   
   
@@ -133,15 +135,16 @@ mod_add_user_score_server <- function(input, output, session, curr_theme, score,
 
       if (usecase == "local") {
         # save score with local file
-        write(paste(newline[1, ], collapse = ";"), file = "save_scores.txt", append = TRUE)
-        table_scores <- read.table("save_scores.txt", sep = ";", header = TRUE, stringsAsFactors = FALSE)
+        write(paste(newline[1, ], collapse = ";"), file = scores_path, append = TRUE)
+        table_scores <- read.table(scores_path, sep = ";", header = TRUE, stringsAsFactors = FALSE)
       } else if (usecase == "shinyappsio") {
         # save score on ethercalc
-        data <- ec_export(.EC_ROOM, ec_host = .EC_HOST)
-        data <- rbind(newline, data)
-        ec_edit(data, room = .EC_ROOM, browse = FALSE, ec_host = .EC_HOST)
+        data <- ec_read(room = ec_room, ec_host = ec_host)
+        data <- rbind(data, newline)
+        ec_edit(data, room = ec_room, browse = FALSE, ec_host = ec_host)
+        # ec_append(newline, room = .EC_ROOM, browse = FALSE, ec_host = .EC_HOST)
         Sys.sleep(2) # little delay
-        table_scores <- ec_export(.EC_ROOM, ec_host = .EC_HOST)
+        table_scores <- ec_read(room = ec_room, ec_host = ec_host)
       }
 
       # disable saving button to avoid double save
@@ -158,10 +161,10 @@ mod_add_user_score_server <- function(input, output, session, curr_theme, score,
 
     if (usecase == "local") {
       # read score locally
-      table_scores <- read.table("save_scores.txt", sep = ";", header = TRUE, stringsAsFactors = FALSE)
+      table_scores <- read.table(scores_path, sep = ";", header = TRUE, stringsAsFactors = FALSE)
     } else if (usecase == "shinyappsio") {
       # read score on ethercalc
-      table_scores <- ec_export(.EC_ROOM, ec_host = .EC_HOST)
+      table_scores <- ec_read(room = ec_room, ec_host = ec_host)
     }
 
     if (input$theme != "All" & nrow(table_scores) > 0) {

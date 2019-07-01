@@ -1,0 +1,4 @@
+Date;Theme;Nickname;Score
+11-06-2019;Theme;Init;0
+
+01 - 07 - 2019;Import/Export;GabrielleD;10

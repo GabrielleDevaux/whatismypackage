@@ -7,7 +7,7 @@
 \usage{
 mod_hello_ui(id)
 
-mod_hello_server(input, output, session)
+mod_hello_server(input, output, session, theme_choices)
 }
 \arguments{
 \item{id}{shiny id}
@@ -17,6 +17,8 @@ mod_hello_server(input, output, session)
 \item{output}{internal}
 
 \item{session}{internal}
+
+\item{theme_choices}{theme choices}
 }
 \description{
 A shiny Module. A "hello" popup to introduce the game and its rules.
