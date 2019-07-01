@@ -63,11 +63,30 @@ mod_hello_server <- function(input, output, session) {
 
 
     footer =
-      actionButton(
-        inputId = ns("play"),
-        label = "Play",
-        icon = icon("play")
+      tagList(
+        fluidRow(
+          column(
+            width = 4,
+            tags$a(
+              target = "_blank", rel = "noopener noreferrer",
+              href = "https://github.com/GabrielleDevaux/whatismypackage",
+              "View app code on GitHub"
+            )
+          ),
+          column(
+            width = 4,
+            offset = 4,
+            actionButton(
+              inputId = ns("play"),
+              label = "Play",
+              icon = icon("play")
+            )
+          )
+        )
+        
+        
       )
+
   ))
 
   observeEvent(input$play, {
