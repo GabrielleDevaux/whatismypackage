@@ -111,8 +111,8 @@ mod_add_user_score_server <- function(input, output, session, curr_theme, score,
   
   output$apologies <- renderUI({
     if(usecase == "shinyappsio"){
-      res <- tags$div("Apologies : the score saving is experimental and may not work everytime",
-                        style = "white-space: pre-wrap; word-break: keep-all; padding:0px;margin:0px; margin-right:10px;"
+      res <- tags$div("Apologies : the score saving is experimental and may not work everytime. Please be gentle with the button, wait a few seconds and refresh scores before trying again.",
+                        style = "white-space: pre-wrap; word-break: keep-all; padding:0px;margin:0px; margin-right:10px; font-size:80%; font-style:italic;"
       )
     } else { 
       res <- ""
@@ -124,7 +124,7 @@ mod_add_user_score_server <- function(input, output, session, curr_theme, score,
   observeEvent(input$validate, {
     if (input$nickname != "") {
       newline <- data.frame(
-        Date = as.character(format(Sys.Date(), "%d-%m-%Y")),
+        Date = as.character(format(Sys.Date(), "%d - %m - %Y")),
         Theme = curr_theme(),
         Nickname = input$nickname,
         Score = score,
@@ -138,10 +138,9 @@ mod_add_user_score_server <- function(input, output, session, curr_theme, score,
       } else if (usecase == "shinyappsio") {
         # save score on ethercalc
         data <- ec_export(.EC_ROOM, ec_host = .EC_HOST)
-        data <- rbind(data, newline)
+        data <- rbind(newline, data)
         ec_edit(data, room = .EC_ROOM, browse = FALSE, ec_host = .EC_HOST)
-        table_scores <- ec_export(.EC_ROOM, ec_host = .EC_HOST)
-        Sys.sleep(1) # little delay
+        Sys.sleep(2) # little delay
         table_scores <- ec_export(.EC_ROOM, ec_host = .EC_HOST)
       }
 
